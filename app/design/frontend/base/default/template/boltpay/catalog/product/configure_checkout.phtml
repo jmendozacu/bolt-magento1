@@ -52,7 +52,7 @@ var boltConfigPDP = {
     init: function(removeItems) {
         // copy object that we always have correct product data.
         var jsonProductCart = Object.assign({}, this._jsonProductCart),
-            boltJsonProductHints = null;
+            boltJsonProductHints = <?php echo $this->getJsonHints(); ?>;
 
         if (removeItems === true) {
             jsonProductCart.items = [];

@@ -26,7 +26,7 @@
  * create the order on Bolt side through the javascript BoltCheckout.configureProductCheckout process.
  *
  */
-class Bolt_Boltpay_Block_Catalog_Product_Boltpay extends Mage_Core_Block_Template
+class Bolt_Boltpay_Block_Catalog_Product_Boltpay extends Bolt_Boltpay_Block_Checkout_Boltpay
 {
     use Bolt_Boltpay_BoltGlobalTrait;
 
@@ -185,5 +185,13 @@ class Bolt_Boltpay_Block_Catalog_Product_Boltpay extends Mage_Core_Block_Templat
         return [
             Mage_Catalog_Model_Product_Type::TYPE_SIMPLE
         ];
+    }
+
+    /**
+     * @return string
+     */
+    public function getJsonHints()
+    {
+        return json_encode($this->getAddressHints(null,'product'),JSON_FORCE_OBJECT);
     }
 }

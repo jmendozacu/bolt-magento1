@@ -267,12 +267,13 @@ class Bolt_Boltpay_Block_Checkout_Boltpay extends Mage_Checkout_Block_Onepage_Re
      * Get address data formatted as hints from the current quote or, if not set in quote, the
      * current customer's data.
      *
-     * @param Mage_Sales_Model_Quote    $quote         Quote used to get customer data
-     * @param string                    $checkoutType  'multi-page' | 'one-page' | 'admin'
+     * @param Mage_Sales_Model_Quote    $quote|null    Quote used to get customer data.
+     * Null for product page checkout when we don't have quote yet
+     * @param string                    $checkoutType  'multi-page' | 'one-page' | 'admin' | 'product'
      *
      * @return array        hints data
      */
-    private function getAddressHints($quote, $checkoutType)
+    protected function getAddressHints($quote, $checkoutType)
     {
 
         $session =  Mage::getSingleton('customer/session');
@@ -283,7 +284,10 @@ class Bolt_Boltpay_Block_Checkout_Boltpay extends Mage_Checkout_Block_Onepage_Re
         // Check if the quote shipping address is set,
         // otherwise use customer shipping address for logged in users.
         /////////////////////////////////////////////////////////////////////////
-        $address = $quote->getShippingAddress();
+        $address = null;
+        if ($quote) {
+            $address = $quote->getShippingAddress();
+        }
         if (!$address || !$address->getStreet1()) {
             if ( $session && $session->isLoggedIn()) {
                 /** @var Mage_Customer_Model_Customer $customer */
